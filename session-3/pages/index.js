@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import { Link } from 'next/link';
+import Link from 'next/link';
 
 function HomePage(props) {
   const { products } = props;
@@ -9,8 +9,12 @@ function HomePage(props) {
       {
         products.map(product => {
           return (
-            <li key={product.id}> 
-              <Link href={`/${product.id}`}> { product.title } </Link>
+            <li key={product.id}>
+              <Link href={{ 
+                pathname: `/${product.id}` 
+              }}>
+                { product.title }
+              </Link>
             </li>
           )
         })
@@ -19,10 +23,18 @@ function HomePage(props) {
   );
 }
 
-export async function getStaticProps() {
+export async function getStaticProps(context) {
   const filePath = path.join(process.cwd(), 'data', 'dummy-backend.json');
   const jsonData = fs.readFileSync(filePath);
   const data = JSON.parse(jsonData);
+
+  if (!data) {
+    return {
+      redirect: {
+        destination: '/no-data',
+      }
+    }
+  }
 
   return {
     props: {
