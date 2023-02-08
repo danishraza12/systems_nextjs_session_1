@@ -11,7 +11,7 @@ function HomePage(props) {
           return (
             <li key={product.id}>
               <Link href={{ 
-                pathname: `/${product.id}` 
+                pathname: `/products/${product.id}` 
               }}>
                 { product.title }
               </Link>
